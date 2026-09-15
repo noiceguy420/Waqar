@@ -1,0 +1,2 @@
+ALTER TABLE client
+    ADD CONSTRAINT UNIQUE(username)

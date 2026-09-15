@@ -2,10 +2,10 @@ package com.example.waqar.Entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -27,6 +27,7 @@ public class Client {
     @Size(max = 30)
     @NotNull
     @Column(name = "Username", nullable = false, length = 30)
+    @Pattern(regexp = "^((?!@).)*$", message = "The '@' character is not allowed")
     private String username;
 
     @Size(max = 65)
