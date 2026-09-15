@@ -9,4 +9,3 @@ alter table post_appointment_case_documentation
 alter table appointment
     add constraint appointment_patient_id_fk
         foreign key (patient_id) references patient (id);
-
