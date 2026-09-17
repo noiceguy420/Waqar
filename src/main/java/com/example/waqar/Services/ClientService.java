@@ -25,9 +25,12 @@ public class ClientService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        Client client = clientRepo.findByUsername(username).orElseThrow(() -> new ClientNotFoundException("username", username));
-
+    public UserDetails loadUserByUsername(@NonNull String identifier) throws UsernameNotFoundException {
+        Client client;
+        if(identifier.contains("@"))
+            client = clientRepo.findByEmail(identifier).orElseThrow(() -> new ClientNotFoundException("email", identifier));
+        else
+            client = clientRepo.findByUsername(identifier).orElseThrow(() -> new ClientNotFoundException("username", identifier));
         return new User(client.getUsername(), client.getPassHash(), Collections.emptyList());
     }
 

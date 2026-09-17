@@ -18,7 +18,7 @@ public class JwtService {
     public Jwt generateAccessToken(Client client){return generateToken(client, jwtConfig.getAccessExpiration());}
     public Jwt generateRefreshToken(Client client){return generateToken(client, jwtConfig.getRefreshExpiration());}
     private Jwt generateToken(Client client, long expiration) {
-        System.out.println("Generating JWT Token, current system time: " + new Date(System.currentTimeMillis()));
+        System.out.println("Generating JWT Token, current system time: " + new Date(System.currentTimeMillis()) + ", expirationVal: " + expiration);
         long newTime =  System.currentTimeMillis() + expiration;
         System.out.println("New JWT Token expiration: " + new Date(newTime));
 
@@ -39,8 +39,7 @@ public class JwtService {
             return new Jwt(claims, jwtConfig.getSecretKey());
         }
         catch (Exception e){
-            System.out.println(e);
-            return null;
+            return new Jwt();//blank to be handled caller
         }
     }
     private Claims getClaimsFromToken(String token) {

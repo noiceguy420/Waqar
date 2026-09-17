@@ -11,6 +11,7 @@ import javax.crypto.SecretKey;
 @Data
 public class JwtConfig {
     private String secret;
+
     private int refreshExpiration;
     private int accessExpiration;
 
