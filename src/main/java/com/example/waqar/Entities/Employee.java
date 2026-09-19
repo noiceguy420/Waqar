@@ -11,7 +11,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Entity
 @Table(name = "employee", schema = "waqardb")
-public class Employee {
+public class Employee implements CustomWaqarEntities{
     @Id
     @Size(max = 10)
     @Column(name = "id", nullable = false, length = 10)

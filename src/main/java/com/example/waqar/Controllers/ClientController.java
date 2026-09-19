@@ -28,8 +28,8 @@ public class ClientController {
     private final ClientService clientService;
     private final ClientMapper clientMapper;
     private final AuthService authService;
-    private JwtService jwtService;
-    private JwtConfig jwtConfig;
+    private final JwtService jwtService;
+    private final JwtConfig jwtConfig;
 
     @PostMapping("new")
     public ResponseEntity<? extends CustomWaqarDto> newClient(@RequestBody @Valid NewClientReqDto req, UriComponentsBuilder uriBuilder) {

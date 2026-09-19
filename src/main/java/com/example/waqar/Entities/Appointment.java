@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "appointment", schema = "waqardb")
-public class Appointment {
+public class Appointment implements CustomWaqarEntities{
     @Id
     @Size(max = 16)
     @Column(name = "id", nullable = false, length = 16)

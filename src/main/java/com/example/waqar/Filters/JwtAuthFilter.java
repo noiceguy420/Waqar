@@ -1,5 +1,6 @@
 package com.example.waqar.Filters;
 
+import com.example.waqar.Exceptions.InvalidJwtException;
 import com.example.waqar.Services.SecurityServices.Jwt;
 import com.example.waqar.Services.SecurityServices.JwtService;
 import jakarta.servlet.FilterChain;
@@ -28,7 +29,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         String token = AuthHeader.replace("Bearer ", "");
         Jwt jwt = jwtService.parseToken(token);
-        if (jwt.isInvalid()) {
+        try{
+            jwt.validateJwt();
+        } catch (InvalidJwtException e) {
             filterChain.doFilter(request, response);
             return;
         }

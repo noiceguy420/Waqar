@@ -17,7 +17,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "post_appointment_case_documentation", schema = "waqardb")
-public class PostAppointmentCaseDocumentation {
+public class PostAppointmentCaseDocumentation implements CustomWaqarEntities {
     @Id
     @Size(max = 16)
     @ColumnDefault("(uuid_to_bin(uuid()))")

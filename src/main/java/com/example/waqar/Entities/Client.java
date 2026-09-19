@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "client", schema = "waqardb")
-public class Client {
+public class Client implements CustomWaqarEntities{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -42,5 +42,8 @@ public class Client {
 
     @OneToMany(mappedBy = "client")
     private Set<Patient> patients = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "client")
+    private Set<PendingPatient> pendingPatients = new LinkedHashSet<>();
 
 }

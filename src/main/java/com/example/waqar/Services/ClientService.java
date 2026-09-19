@@ -40,7 +40,7 @@ public class ClientService implements UserDetailsService {
             throw new ClientAlreadyExistsException("email", req.getEmail());
         Client client = clientMapper.toEntity(req);
         client.setPassHash(passwordEncoder.encode(req.getPassword()));
-        System.out.println(client);
+        System.out.println("new client saved: " + client); //TODO: change to logging as well
         clientRepo.save(client);
 
         return clientMapper.toDto(client);
