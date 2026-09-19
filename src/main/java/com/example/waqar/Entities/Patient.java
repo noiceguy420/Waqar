@@ -24,14 +24,14 @@ public class Patient {
     @Size(max = 100)
     @NotNull
     @Column(name = "Name", nullable = false, length = 100)
-    private String name;
+    private Gender name;
 
     @NotNull
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
     @NotNull
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     private String gender;
 
@@ -53,5 +53,5 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient")
     private Set<Appointment> appointments = new LinkedHashSet<>();
-
 }
+
