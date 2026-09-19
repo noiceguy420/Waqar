@@ -2,6 +2,10 @@ package com.example.waqar.Controllers;
 
 import com.example.waqar.Configs.JwtConfig;
 import com.example.waqar.Dtos.*;
+import com.example.waqar.Dtos.ClientDtos.ClientLoginReq;
+import com.example.waqar.Dtos.ClientDtos.NewClientReqDto;
+import com.example.waqar.Dtos.MiscDtos.ErrorDto;
+import com.example.waqar.Dtos.MiscDtos.JwtTokenRes;
 import com.example.waqar.Entities.Client;
 import com.example.waqar.Mappers.ClientMapper;
 import com.example.waqar.Services.ClientService;

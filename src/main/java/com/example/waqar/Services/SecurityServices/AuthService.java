@@ -1,6 +1,6 @@
 package com.example.waqar.Services.SecurityServices;
 
-import com.example.waqar.Dtos.ClientLoginReq;
+import com.example.waqar.Dtos.ClientDtos.ClientLoginReq;
 import com.example.waqar.Entities.Client;
 import com.example.waqar.Exceptions.AuthException;
 import com.example.waqar.Exceptions.ClientNotFoundException;
@@ -25,7 +25,7 @@ public class AuthService {
             return clientRepo.findById(id).orElseThrow(() -> new ClientNotFoundException("ID", id.toString()));
         }
         catch (NullPointerException e){
-            throw new AuthException("id was null");
+            throw new AuthException("id was null", "no id provided");
         }
     }
 

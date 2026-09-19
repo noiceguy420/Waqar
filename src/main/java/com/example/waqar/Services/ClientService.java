@@ -1,8 +1,8 @@
 package com.example.waqar.Services;
 
 import com.example.waqar.Dtos.CustomWaqarDto;
-import com.example.waqar.Dtos.ErrorDto;
-import com.example.waqar.Dtos.NewClientReqDto;
+import com.example.waqar.Dtos.MiscDtos.ErrorDto;
+import com.example.waqar.Dtos.ClientDtos.NewClientReqDto;
 import com.example.waqar.Entities.Client;
 import com.example.waqar.Exceptions.ClientNotFoundException;
 import com.example.waqar.Mappers.ClientMapper;

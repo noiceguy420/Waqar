@@ -1,5 +1,6 @@
-package com.example.waqar.Dtos;
+package com.example.waqar.Dtos.ClientDtos;
 
+import com.example.waqar.Dtos.CustomWaqarDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

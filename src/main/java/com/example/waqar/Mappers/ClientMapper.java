@@ -1,7 +1,7 @@
 package com.example.waqar.Mappers;
 
-import com.example.waqar.Dtos.ClientDto;
-import com.example.waqar.Dtos.NewClientReqDto;
+import com.example.waqar.Dtos.ClientDtos.ClientDto;
+import com.example.waqar.Dtos.ClientDtos.NewClientReqDto;
 import com.example.waqar.Entities.Client;
 import org.mapstruct.*;
 

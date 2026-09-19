@@ -1,8 +1,8 @@
 package com.example.waqar.Controllers;
 
 import com.example.waqar.Dtos.CustomWaqarDto;
-import com.example.waqar.Dtos.ErrorDto;
-import com.example.waqar.Dtos.JwtTokenRes;
+import com.example.waqar.Dtos.MiscDtos.ErrorDto;
+import com.example.waqar.Dtos.MiscDtos.JwtTokenRes;
 import com.example.waqar.Entities.Client;
 import com.example.waqar.Exceptions.ClientNotFoundException;
 import com.example.waqar.Exceptions.CookieNotFoundException;

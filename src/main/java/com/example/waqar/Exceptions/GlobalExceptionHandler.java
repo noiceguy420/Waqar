@@ -1,6 +1,6 @@
 package com.example.waqar.Exceptions;
 
-import com.example.waqar.Dtos.ErrorDto;
+import com.example.waqar.Dtos.MiscDtos.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

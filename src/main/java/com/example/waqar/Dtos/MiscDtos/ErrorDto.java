@@ -1,5 +1,6 @@
-package com.example.waqar.Dtos;
+package com.example.waqar.Dtos.MiscDtos;
 
+import com.example.waqar.Dtos.CustomWaqarDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
