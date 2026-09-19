@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "pending_patient", schema = "waqardb")
-public class PendingPatient {
+public class PendingPatient implements CustomWaqarEntities{
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id", nullable = false)
@@ -20,7 +20,7 @@ public class PendingPatient {
         @Size(max = 100)
         @NotNull
         @Column(name = "Name", nullable = false, length = 100)
-        private Gender name;
+        private String name;
 
         @NotNull
         @Column(name = "date_of_birth", nullable = false)
@@ -29,7 +29,7 @@ public class PendingPatient {
         @NotNull
         @Enumerated(EnumType.STRING)
         @Column(name = "gender", nullable = false)
-        private String gender;
+        private Gender gender;
 
         @Size(max = 15)
         @NotNull

@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "patient", schema = "waqardb")
-public class Patient {
+public class Patient implements CustomWaqarEntities{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -24,7 +24,7 @@ public class Patient {
     @Size(max = 100)
     @NotNull
     @Column(name = "Name", nullable = false, length = 100)
-    private Gender name;
+    private String name;
 
     @NotNull
     @Column(name = "date_of_birth", nullable = false)
@@ -33,7 +33,7 @@ public class Patient {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
-    private String gender;
+    private Gender gender;
 
     @Size(max = 15)
     @NotNull
