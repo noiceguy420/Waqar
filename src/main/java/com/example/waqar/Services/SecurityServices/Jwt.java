@@ -20,24 +20,19 @@ public class Jwt {
         this.secretKey = null;
     }
 
-    public boolean isInvalid() {
-
-        return isEmpty() || isExpired(); //add any other conditions here
+    public void validateJwt() {
+        if(isEmpty())
+            throw new InvalidJwtException("JWT is invalid");
+        if(isExpired())
+            throw new InvalidJwtException("JWT is expired");
     }
     private boolean isExpired() {return claims.getExpiration().before(new Date());}
     private boolean isEmpty() {return (claims == null && secretKey == null);}
 
 
     public Integer getClientId() {
-        try {
-            return Integer.parseInt(claims.getSubject());
-        } catch (Exception e) {
-            if(isEmpty())
-                throw new InvalidJwtException("JWT is empty");
-            if(isExpired())
-                throw new InvalidJwtException("JWT is expired");
-        }
-        return null;
+        this.validateJwt();
+        return Integer.parseInt(claims.getSubject());
     }
 
     @Override

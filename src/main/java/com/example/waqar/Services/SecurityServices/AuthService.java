@@ -7,7 +7,6 @@ import com.example.waqar.Exceptions.ClientNotFoundException;
 import com.example.waqar.Repositories.ClientRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,14 +29,10 @@ public class AuthService {
     }
 
     public Client LoginClientHelper(ClientLoginReq req){
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getIdentifier(), req.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getIdentifier(), req.getPassword()));
             return clientRepo.findByUsername(req.getIdentifier())
                     .or(() -> clientRepo.findByEmail(req.getIdentifier()))
                     .orElseThrow(() -> new ClientNotFoundException("email or username", req.getIdentifier()));
-        }catch (BadCredentialsException e){
-            return null;
-        }
 
     }
 }

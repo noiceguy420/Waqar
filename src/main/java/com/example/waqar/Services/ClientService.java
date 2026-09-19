@@ -1,9 +1,9 @@
 package com.example.waqar.Services;
 
 import com.example.waqar.Dtos.CustomWaqarDto;
-import com.example.waqar.Dtos.MiscDtos.ErrorDto;
 import com.example.waqar.Dtos.ClientDtos.NewClientReqDto;
 import com.example.waqar.Entities.Client;
+import com.example.waqar.Exceptions.ClientAlreadyExistsException;
 import com.example.waqar.Exceptions.ClientNotFoundException;
 import com.example.waqar.Mappers.ClientMapper;
 import com.example.waqar.Repositories.ClientRepo;
@@ -37,7 +37,7 @@ public class ClientService implements UserDetailsService {
     public CustomWaqarDto newClientHelper(NewClientReqDto req){
 
         if(clientRepo.existsByEmail(req.getEmail()))
-            return new ErrorDto("Email already exists");
+            throw new ClientAlreadyExistsException("email", req.getEmail());
         Client client = clientMapper.toEntity(req);
         client.setPassHash(passwordEncoder.encode(req.getPassword()));
         System.out.println(client);
