@@ -1,11 +1,14 @@
 package com.example.waqar.Controllers;
 
 import com.example.waqar.Dtos.CustomWaqarDto;
+import com.example.waqar.Dtos.MiscDtos.ErrorDto;
 import com.example.waqar.Dtos.PendingPatientDtos.NewPendingPendingRequest;
 import com.example.waqar.Dtos.PendingPatientDtos.PendingPatientDto;
+import com.example.waqar.Dtos.PendingPatientDtos.PendingPatientSetDto;
 import com.example.waqar.Services.PendingPatientService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,6 +31,11 @@ public class PendingPatientController {
 
     @GetMapping
     public ResponseEntity<? extends CustomWaqarDto> getPendingPatients() {
-        return null;
+        PendingPatientSetDto set = new PendingPatientSetDto(pendingPatientService.getPendingPatientsHelper());
+
+        if(set.getPendingPatientsCount() < 1) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto("no pending patients found for current user"));
+        }
+        return ResponseEntity.ok(set);
     }
 }
