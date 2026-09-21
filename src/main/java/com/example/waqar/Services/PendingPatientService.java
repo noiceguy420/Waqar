@@ -23,6 +23,7 @@ public class PendingPatientService {
     public PendingPatientDto newPendingPatientHelper(NewPendingPendingRequest req) {
         //add any duplication checks here if any. none will be added based on the name field
         PendingPatient tmpPat = pendingPatientMapper.toEntity(req);
+        tmpPat.setClient(authService.getLoggedInClient());
         pendingPatientRepo.save(tmpPat);
         System.out.println("New Patient has been saved: "  + tmpPat);
         return pendingPatientMapper.toDto(tmpPat);

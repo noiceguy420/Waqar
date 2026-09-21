@@ -12,11 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import java.net.URI;
 
 @RestController
-@RequestMapping("my-patients")
+@RequestMapping("my patients")
 @AllArgsConstructor
 public class PendingPatientController {
     private PendingPatientService pendingPatientService;
@@ -25,15 +24,16 @@ public class PendingPatientController {
     public ResponseEntity<? extends CustomWaqarDto> createPendingPatient(@RequestBody @Valid NewPendingPendingRequest req, UriComponentsBuilder uriBuilder) {
         PendingPatientDto res = pendingPatientService.newPendingPatientHelper(req);
 
-        URI uri = uriBuilder.path("/my-patients").buildAndExpand(res).toUri();
+        URI uri = uriBuilder.path("/my patients").buildAndExpand(res).toUri();
         return ResponseEntity.created(uri).body(res);
     }
 
-    @GetMapping
+    @GetMapping("view my patients")
     public ResponseEntity<? extends CustomWaqarDto> getPendingPatients() {
         PendingPatientSetDto set = new PendingPatientSetDto(pendingPatientService.getPendingPatientsHelper());
 
         if(set.getPendingPatientsCount() < 1) {
+            System.out.println("No pending patient found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto("no pending patients found for current user"));
         }
         return ResponseEntity.ok(set);

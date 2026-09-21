@@ -39,7 +39,8 @@ public class JwtService {
             return new Jwt(claims, jwtConfig.getSecretKey());
         }
         catch (Exception e){
-            return new Jwt();//blank to be handled caller
+            System.out.println("Token is invalid\n\t" + e.getMessage()); //TODO: replace with a logger
+            return new Jwt();//blank to be handled by the caller
         }
     }
     private Claims getClaimsFromToken(String token) {
