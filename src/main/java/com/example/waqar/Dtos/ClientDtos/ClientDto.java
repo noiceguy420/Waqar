@@ -1,6 +1,6 @@
 package com.example.waqar.Dtos.ClientDtos;
 
-import com.example.waqar.Dtos.CustomWaqarDto;
+import com.example.waqar.Dtos.ResponseBodyDto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class ClientDto implements CustomWaqarDto {
+public class ClientDto implements ResponseBodyDto {
     @NotNull
     @Size(max = 70)
     String email;

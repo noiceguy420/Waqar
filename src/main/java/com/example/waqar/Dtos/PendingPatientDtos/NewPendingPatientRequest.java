@@ -1,6 +1,6 @@
 package com.example.waqar.Dtos.PendingPatientDtos;
 
-import com.example.waqar.Dtos.CustomWaqarDto;
+import com.example.waqar.Dtos.RequestBodyDto;
 import com.example.waqar.Entities.Gender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class NewPendingPendingRequest implements CustomWaqarDto {
+public class NewPendingPatientRequest implements RequestBodyDto {
     @NotBlank
     @Size(max = 100)
     String name;

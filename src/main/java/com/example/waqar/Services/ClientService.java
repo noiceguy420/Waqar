@@ -2,6 +2,7 @@ package com.example.waqar.Services;
 
 import com.example.waqar.Dtos.CustomWaqarDto;
 import com.example.waqar.Dtos.ClientDtos.NewClientReqDto;
+import com.example.waqar.Dtos.ResponseBodyDto;
 import com.example.waqar.Entities.Client;
 import com.example.waqar.Exceptions.ClientAlreadyExistsException;
 import com.example.waqar.Exceptions.ClientNotFoundException;
@@ -34,7 +35,7 @@ public class ClientService implements UserDetailsService {
         return new User(client.getUsername(), client.getPassHash(), Collections.emptyList());
     }
 
-    public CustomWaqarDto newClientHelper(NewClientReqDto req){
+    public ResponseBodyDto newClientHelper(NewClientReqDto req){
 
         if(clientRepo.existsByEmail(req.getEmail()))
             throw new ClientAlreadyExistsException("email", req.getEmail());

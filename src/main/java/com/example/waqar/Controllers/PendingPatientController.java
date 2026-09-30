@@ -2,9 +2,10 @@ package com.example.waqar.Controllers;
 
 import com.example.waqar.Dtos.CustomWaqarDto;
 import com.example.waqar.Dtos.MiscDtos.ErrorDto;
-import com.example.waqar.Dtos.PendingPatientDtos.NewPendingPendingRequest;
+import com.example.waqar.Dtos.PendingPatientDtos.NewPendingPatientRequest;
 import com.example.waqar.Dtos.PendingPatientDtos.PendingPatientDto;
 import com.example.waqar.Dtos.PendingPatientDtos.PendingPatientSetDto;
+import com.example.waqar.Dtos.ResponseBodyDto;
 import com.example.waqar.Services.PendingPatientService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class PendingPatientController {
     private PendingPatientService pendingPatientService;
 
     @PostMapping("new")
-    public ResponseEntity<? extends CustomWaqarDto> createPendingPatient(@RequestBody @Valid NewPendingPendingRequest req, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<? extends ResponseBodyDto> createPendingPatient(@RequestBody @Valid NewPendingPatientRequest req, UriComponentsBuilder uriBuilder) {
         PendingPatientDto res = pendingPatientService.newPendingPatientHelper(req);
 
         URI uri = uriBuilder.path("/my patients").buildAndExpand(res).toUri();
@@ -29,8 +30,8 @@ public class PendingPatientController {
     }
 
     @GetMapping("view my patients")
-    public ResponseEntity<? extends CustomWaqarDto> getPendingPatients() {
-        PendingPatientSetDto set = new PendingPatientSetDto(pendingPatientService.getPendingPatientsHelper());
+    public ResponseEntity<? extends ResponseBodyDto> getPendingPatients() {
+        PendingPatientSetDto set = pendingPatientService.getPendingPatientsHelper();
 
         if(set.getPendingPatientsCount() < 1) {
             System.out.println("No pending patient found");

@@ -2,6 +2,7 @@ package com.example.waqar.Controllers;
 
 import com.example.waqar.Dtos.CustomWaqarDto;
 import com.example.waqar.Dtos.MiscDtos.JwtTokenRes;
+import com.example.waqar.Dtos.ResponseBodyDto;
 import com.example.waqar.Entities.Client;
 import com.example.waqar.Exceptions.ClientNotFoundException;
 import com.example.waqar.Exceptions.CookieNotFoundException;
@@ -20,7 +21,7 @@ public class authController {
     private final ClientRepo clientRepo;
 
     @PostMapping("refresh")
-    public ResponseEntity<? extends CustomWaqarDto> refresh(@CookieValue(value = "refreshToken", required = false) String token){
+    public ResponseEntity<? extends ResponseBodyDto> refresh(@CookieValue(value = "refreshToken", required = false) String token){
         if(token == null){
             throw new CookieNotFoundException("refreshToken");
         }

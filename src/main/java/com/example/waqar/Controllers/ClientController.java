@@ -32,8 +32,8 @@ public class ClientController {
     private final JwtConfig jwtConfig;
 
     @PostMapping("new")
-    public ResponseEntity<? extends CustomWaqarDto> newClient(@RequestBody @Valid NewClientReqDto req, UriComponentsBuilder uriBuilder) {
-        CustomWaqarDto res = clientService.newClientHelper(req);
+    public ResponseEntity<? extends ResponseBodyDto> newClient(@RequestBody @Valid NewClientReqDto req, UriComponentsBuilder uriBuilder) {
+        ResponseBodyDto res = clientService.newClientHelper(req);
 
         URI uri = uriBuilder.path("/me").buildAndExpand(res).toUri();
         return ResponseEntity.created(uri).body(res);
