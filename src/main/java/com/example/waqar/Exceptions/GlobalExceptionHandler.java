@@ -1,17 +1,20 @@
 package com.example.waqar.Exceptions;
 
 import com.example.waqar.Dtos.MiscDtos.ErrorDto;
+import com.example.waqar.Services.LoggerService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-//TODO: when logging becomes active in the system change sout to log
+@AllArgsConstructor
 public class GlobalExceptionHandler {
+    private LoggerService logger;
 
     private void logError(String message) {
-        System.out.println(message); //change this in the TODO
+        logger.log(message); //TODO:is it better to replace each logError function call or leave as is?
     }
 
     @ExceptionHandler(CookieNotFoundException.class)

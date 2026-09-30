@@ -1,6 +1,5 @@
 package com.example.waqar.Services;
 
-import com.example.waqar.Dtos.CustomWaqarDto;
 import com.example.waqar.Dtos.ClientDtos.NewClientReqDto;
 import com.example.waqar.Dtos.ResponseBodyDto;
 import com.example.waqar.Entities.Client;
@@ -24,6 +23,7 @@ public class ClientService implements UserDetailsService {
     private final ClientRepo clientRepo;
     private final ClientMapper clientMapper;
     private final PasswordEncoder passwordEncoder;
+    private LoggerService logger;
 
     @Override
     public UserDetails loadUserByUsername(@NonNull String identifier) throws UsernameNotFoundException {
@@ -41,7 +41,7 @@ public class ClientService implements UserDetailsService {
             throw new ClientAlreadyExistsException("email", req.getEmail());
         Client client = clientMapper.toEntity(req);
         client.setPassHash(passwordEncoder.encode(req.getPassword()));
-        System.out.println("new client saved: " + client); //TODO: change to logging as well
+        logger.log("new client saved: " + client);
         clientRepo.save(client);
 
         return clientMapper.toDto(client);

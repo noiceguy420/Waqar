@@ -2,6 +2,7 @@ package com.example.waqar.Services.SecurityServices;
 
 import com.example.waqar.Configs.JwtConfig;
 import com.example.waqar.Entities.Client;
+import com.example.waqar.Services.LoggerService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
@@ -13,14 +14,15 @@ import java.util.Date;
 @Service
 public class JwtService {
     private final JwtConfig jwtConfig;
+    private LoggerService logger;
 
 
     public Jwt generateAccessToken(Client client){return generateToken(client, jwtConfig.getAccessExpiration());}
     public Jwt generateRefreshToken(Client client){return generateToken(client, jwtConfig.getRefreshExpiration());}
     private Jwt generateToken(Client client, long expiration) {
-        System.out.println("Generating JWT Token, current system time: " + new Date(System.currentTimeMillis()) + ", expirationVal: " + expiration);
+        logger.log("Generating JWT Token, current system time: " + new Date(System.currentTimeMillis()) + ", expirationVal: " + expiration);
         long newTime =  System.currentTimeMillis() + expiration;
-        System.out.println("New JWT Token expiration: " + new Date(newTime));
+        logger.log("New JWT Token expiration: " + new Date(newTime));
 
         Claims claims = Jwts.claims()
                 .subject(client.getId().toString())
@@ -33,13 +35,13 @@ public class JwtService {
     }
 
     public Jwt parseToken(String token){
-        System.out.println("Parsing JWT Token");
+        logger.log("Parsing JWT Token");
         try {
             Claims claims = getClaimsFromToken(token);
             return new Jwt(claims, jwtConfig.getSecretKey());
         }
         catch (Exception e){
-            System.out.println("Token is invalid\n\t" + e.getMessage()); //TODO: replace with a logger
+            logger.log("Token is invalid\n\t" + e.getMessage());
             return new Jwt();//blank to be handled by the caller
         }
     }

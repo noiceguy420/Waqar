@@ -8,6 +8,7 @@ import com.example.waqar.Dtos.MiscDtos.JwtTokenRes;
 import com.example.waqar.Entities.Client;
 import com.example.waqar.Mappers.ClientMapper;
 import com.example.waqar.Services.ClientService;
+import com.example.waqar.Services.LoggerService;
 import com.example.waqar.Services.SecurityServices.AuthService;
 import com.example.waqar.Services.SecurityServices.Jwt;
 import com.example.waqar.Services.SecurityServices.JwtService;
@@ -30,6 +31,7 @@ public class ClientController {
     private final AuthService authService;
     private final JwtService jwtService;
     private final JwtConfig jwtConfig;
+    private LoggerService logger;
 
     @PostMapping("new")
     public ResponseEntity<? extends ResponseBodyDto> newClient(@RequestBody @Valid NewClientReqDto req, UriComponentsBuilder uriBuilder) {
@@ -41,9 +43,9 @@ public class ClientController {
 
     @PostMapping("login")
     public ResponseEntity<? extends CustomWaqarDto> loginClient(@RequestBody @Valid ClientLoginReq req, HttpServletResponse response){
-        System.out.println("entered loginClient");
+        logger.log("entered loginClient");
         Client client = authService.LoginClientHelper(req);
-        System.out.println("client = "+client);
+        logger.log("client = "+client);
         Jwt accessToken = jwtService.generateAccessToken(client);
         Jwt refreshToken = jwtService.generateRefreshToken(client);
 
