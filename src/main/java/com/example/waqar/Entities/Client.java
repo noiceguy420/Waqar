@@ -41,9 +41,6 @@ public class Client implements CustomWaqarEntities{
     private String phoneNumber;
 
     @OneToMany(mappedBy = "client")
-    private Set<Patient> patients = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "client")
-    private Set<PendingPatient> pendingPatients = new LinkedHashSet<>();
+    private Set<Patient> Patients = new LinkedHashSet<>();
 
 }

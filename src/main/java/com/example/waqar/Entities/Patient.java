@@ -44,7 +44,7 @@ public class Patient implements CustomWaqarEntities{
     @ColumnDefault("'none'")
     @Lob
     @Column(name = "chronic_diseases", nullable = false)
-    private String chronicDiseases;
+    private Set<ChronicDiseases> chronicDiseases;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

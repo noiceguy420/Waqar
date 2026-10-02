@@ -1,4 +1,4 @@
-package com.example.waqar.Dtos.PendingPatientDtos;
+package com.example.waqar.Dtos.PatientDtos;
 
 import com.example.waqar.Dtos.ClientDtos.ClientDto;
 import com.example.waqar.Dtos.ResponseBodyDto;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @AllArgsConstructor
 @Data
-public class PendingPatientDto implements ResponseBodyDto {
+public class PatientDto implements ResponseBodyDto {
     private final String name;
     private final LocalDate dateOfBirth;
     private final Gender gender;
