@@ -24,7 +24,7 @@ public class PatientService {
 
     public PatientDto newPatientHelper(NewPatientRequest req) {
         //add any duplication checks here if any. none will be added based on the name field
-        Patient tmpPat = PatientMapper.toEntity(req);
+        Patient tmpPat = PatientMapper.reqToEntity(req);
         tmpPat.setClient(authService.getLoggedInClient());
         PatientRepo.save(tmpPat);
         logger.log("New Patient has been saved: "  + tmpPat);

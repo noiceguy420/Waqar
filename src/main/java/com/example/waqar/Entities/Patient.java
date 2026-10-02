@@ -1,5 +1,6 @@
 package com.example.waqar.Entities;
 
+import com.example.waqar.Converters.ChronicDiseaseConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -43,6 +44,7 @@ public class Patient implements CustomWaqarEntities{
     @NotNull
     @ColumnDefault("'none'")
     @Lob
+    @Convert(converter = ChronicDiseaseConverter.class)
     @Column(name = "chronic_diseases", nullable = false)
     private Set<ChronicDiseases> chronicDiseases;
 

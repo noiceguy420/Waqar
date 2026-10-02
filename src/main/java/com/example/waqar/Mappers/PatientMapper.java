@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PatientMapper {
-    Patient toEntity(NewPatientRequest req);
+    Patient reqToEntity(NewPatientRequest req);
 
     PatientDto toDto(Patient Patient);
 

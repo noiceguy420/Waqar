@@ -2,8 +2,10 @@ package com.example.waqar.Services.SecurityServices;
 
 import com.example.waqar.Configs.JwtConfig;
 import com.example.waqar.Entities.Client;
+import com.example.waqar.Exceptions.InvalidJwtException;
 import com.example.waqar.Services.LoggerService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,16 +36,15 @@ public class JwtService {
         return new Jwt(claims, jwtConfig.getSecretKey());
     }
 
-    public Jwt parseToken(String token){
-        logger.log("Parsing JWT Token");
+    public Jwt parseToken(String token) {
         try {
             Claims claims = getClaimsFromToken(token);
             return new Jwt(claims, jwtConfig.getSecretKey());
         }
-        catch (Exception e){
-            logger.log("Token is invalid\n\t" + e.getMessage());
-            return new Jwt();//blank to be handled by the caller
+        catch (ExpiredJwtException e){
+            throw new InvalidJwtException("Expired JWT Token");
         }
+
     }
     private Claims getClaimsFromToken(String token) {
         return Jwts.parser()

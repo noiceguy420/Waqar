@@ -8,22 +8,31 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 import java.util.Collections;
 
 @Component
-@AllArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final LoggerService logger;
+    @Qualifier("handlerExceptionResolver")
+    private final HandlerExceptionResolver resolver;
+
+    public JwtAuthFilter(JwtService jwtService,  LoggerService logger,
+                         @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+        this.jwtService = jwtService;
+        this.logger = logger;
+        this.resolver = resolver;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -33,12 +42,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
         String token = AuthHeader.replace("Bearer ", "");
-        Jwt jwt = jwtService.parseToken(token);
+        Jwt jwt;
         try{
+            jwt = jwtService.parseToken(token);
             jwt.validateJwt();
             logger.log("JWT validated in filter: "  + jwt);
         } catch (InvalidJwtException e) {
-            filterChain.doFilter(request, response);
+            resolver.resolveException(request, response, null, e);
             return;
         }
 

@@ -25,6 +25,5 @@ public class NewPatientRequest implements RequestBodyDto {
     private final Gender gender;
     @NotBlank
     private final String phoneNumber;
-    @NotNull
     private final Set<ChronicDiseases> chronicDiseases;
 }
