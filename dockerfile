@@ -34,6 +34,7 @@ EXPOSE 8080
 # but explicit flags below help in constrained environments) and allow
 # runtime JVM tuning via an env var without rebuilding the image
 ENV JAVA_OPTS=""
+ENV JWT_SECRET="lkG1UAHvkVgPlzwHXGyHPHiIhfuow69YQgRPQTLBm6lPde/PV0AmdnOKiLi4KiOSipNJHbr5K9QpkKr7K6Bd3A==" #only for development no security risk
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
 
 #build command (from project root): docker build -t waqar-api:latest ./
