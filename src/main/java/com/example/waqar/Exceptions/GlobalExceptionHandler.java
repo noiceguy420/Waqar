@@ -1,12 +1,14 @@
 package com.example.waqar.Exceptions;
 
 import com.example.waqar.Dtos.MiscDtos.ErrorDto;
+import com.example.waqar.Dtos.MiscDtos.ErrorMapDto;
 import com.example.waqar.Services.LoggerService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -64,19 +66,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorDto> ConstraintViolationException(ConstraintViolationException e) {
+    public ResponseEntity<ErrorMapDto> ConstraintViolationException(ConstraintViolationException e) {
         logError(e.getMessage());
         Map<String, String> errors = new HashMap<>();
         e.getConstraintViolations().forEach(violation ->
                 errors.put(violation.getPropertyPath().toString(), violation.getMessage()));
-        return ResponseEntity.badRequest().body(new ErrorDto(errors.toString()));
+        return ResponseEntity.badRequest().body(new ErrorMapDto(errors));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class) //for when @Valid throws the exception
-    public ResponseEntity<Map<String, String>> handleBodyValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorMapDto> handleBodyValidation(MethodArgumentNotValidException ex) {
+        logError(ex.getMessage());
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors()
                 .forEach(err -> errors.put(err.getField(), err.getDefaultMessage()));
-        return ResponseEntity.badRequest().body(errors);
+        return ResponseEntity.badRequest().body(new ErrorMapDto(errors));
     }
 }
