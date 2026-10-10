@@ -82,4 +82,11 @@ public class GlobalExceptionHandler {
                 .forEach(err -> errors.put(err.getField(), err.getDefaultMessage()));
         return ResponseEntity.badRequest().body(new ErrorMapDto(errors));
     }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorDto> handleHttpRequestMethodNotSupportedException(
+            HttpRequestMethodNotSupportedException ex){
+        logError(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(new ErrorDto(ex.getMessage()));
+    }
 }
