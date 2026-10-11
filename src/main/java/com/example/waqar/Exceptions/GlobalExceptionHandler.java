@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClientNotFoundException.class)
     public ResponseEntity<ErrorDto> ClientNotFoundException(ClientNotFoundException e) {
         logError(e.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDto("client not found, searched: "
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto("client not found, searched: "
                 + e.getFieldOfSearch() + "for value: " + e.getSearchedValue()));
     }
 
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClientAlreadyExistsException.class)
     public ResponseEntity<ErrorDto> ClientAlreadyExistsException(ClientAlreadyExistsException e) {
         logError(e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto("the client with " + e.getField() + ": "
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDto("the client with " + e.getField() + ": "
                 + e.getValue() + " already exists"));
     }
 
