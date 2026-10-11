@@ -15,7 +15,6 @@ import com.example.waqar.Services.SecurityServices.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -45,7 +44,7 @@ public class PatientService {
         Patient tmpPat = patientRepo.findById(pid).orElseThrow(() ->
                 new PatientNotFoundException("id",pid.toString()));
 
-        if (!Objects.equals(tmpPat.getClient().getId(), authService.getLoggedInClient().getId()))
+        if (!tmpPat.clientOwnsPatient(authService.getLoggedInClient()))
             throw new AuthException("client mismatch", "this client is not authorized to edit this patient");
         if(req.getName() != null && !req.getName().isEmpty())
             tmpPat.setName(req.getName());

@@ -55,5 +55,21 @@ public class Patient implements CustomWaqarEntities{
 
     @OneToMany(mappedBy = "patient")
     private Set<Appointment> appointments = new LinkedHashSet<>();
+
+    public boolean clientOwnsPatient(Client client) {
+        return this.getClient().equals(client);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Patient)) return false;
+        return (((Patient) obj).getId().equals(this.getId()) && ((Patient) obj).getName().equals(this.getName())
+                && ((Patient) obj).getDateOfBirth().equals(this.getDateOfBirth())
+                && ((Patient) obj).getGender().equals(this.getGender())
+                && ((Patient) obj).getPhoneNumber().equals(this.getPhoneNumber())
+                && ((Patient) obj).getChronicDiseases().equals(this.getChronicDiseases())
+                && clientOwnsPatient(((Patient) obj).getClient()));
+    }
 }
 
