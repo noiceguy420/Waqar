@@ -89,4 +89,11 @@ public class GlobalExceptionHandler {
         logError(ex.getMessage());
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(new ErrorDto(ex.getMessage()));
     }
+
+    @ExceptionHandler(PatientNotFoundException.class)
+    public ResponseEntity<ErrorDto> PatientNotFoundException(PatientNotFoundException e) {
+        logError(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto("Patient not found, searched: "
+                + e.getFieldOfSearch() +  "for value: " + e.getSearchedValue()));
+    }
 }

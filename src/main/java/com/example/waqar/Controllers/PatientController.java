@@ -1,6 +1,7 @@
 package com.example.waqar.Controllers;
 
 import com.example.waqar.Dtos.MiscDtos.ErrorDto;
+import com.example.waqar.Dtos.PatientDtos.EditPatientRequest;
 import com.example.waqar.Dtos.PatientDtos.NewPatientRequest;
 import com.example.waqar.Dtos.PatientDtos.PatientDto;
 import com.example.waqar.Dtos.PatientDtos.PatientSetDto;
@@ -30,7 +31,7 @@ public class PatientController {
         return ResponseEntity.created(uri).body(res);
     }
 
-    @GetMapping("view my patients")
+    @GetMapping("view all")
     public ResponseEntity<? extends ResponseBodyDto> getPatients() {
         PatientSetDto set = PatientService.getPatientsHelper();
 
@@ -39,5 +40,15 @@ public class PatientController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto("no pending patients found for current user"));
         }
         return ResponseEntity.ok(set);
+    }
+
+    @PatchMapping("edit my patient/{pid}")
+    public ResponseEntity<? extends ResponseBodyDto>  editPatient(
+            @PathVariable(value = "pid", required = false) Integer pid, @RequestBody @Valid EditPatientRequest req,
+            UriComponentsBuilder uriBuilder) {
+
+        PatientDto res = PatientService.editPatientHelper(pid, req);
+        URI uri = uriBuilder.path("/my patients").buildAndExpand(res).toUri();
+        return ResponseEntity.created(uri).body(res);
     }
 }
