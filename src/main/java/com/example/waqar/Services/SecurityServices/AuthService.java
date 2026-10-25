@@ -21,6 +21,8 @@ public class AuthService {
     public Client getLoggedInClient(){
         try {
             Integer id = (Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if(id == null)
+                throw new AuthException("something went wrong", "please try again. if the issue persists contact us");
             return clientRepo.findById(id).orElseThrow(() -> new ClientNotFoundException("ID", id.toString()));
         }
         catch (NullPointerException e){
@@ -32,7 +34,7 @@ public class AuthService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getIdentifier(), req.getPassword()));
             return clientRepo.findByUsername(req.getIdentifier())
                     .or(() -> clientRepo.findByEmail(req.getIdentifier()))
-                    .orElseThrow(() -> new ClientNotFoundException("email or username", req.getIdentifier()));
+                    .orElseThrow(() -> new AuthException("identifier or password are incorrect", "bad credentials"));
 
     }
 }

@@ -20,12 +20,12 @@ import java.net.URI;
 @RequestMapping("my patients")
 @AllArgsConstructor
 public class PatientController {
-    private PatientService PatientService;
+    private PatientService patientService;
     private LoggerService logger;
 
     @PostMapping("new")
     public ResponseEntity<? extends ResponseBodyDto> createPatient(@RequestBody @Valid NewPatientRequest req, UriComponentsBuilder uriBuilder) {
-        PatientDto res = PatientService.newPatientHelper(req);
+        PatientDto res = patientService.newPatientHelper(req);
 
         URI uri = uriBuilder.path("/my patients").buildAndExpand(res).toUri();
         return ResponseEntity.created(uri).body(res);
@@ -33,22 +33,30 @@ public class PatientController {
 
     @GetMapping("view all")
     public ResponseEntity<? extends ResponseBodyDto> getPatients() {
-        PatientSetDto set = PatientService.getPatientsHelper();
+        PatientSetDto set = patientService.getPatientsHelper();
 
         if(set.getPatientsCount() < 1) {
             logger.log("No pending patient found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto("no pending patients found for current user"));
         }
+
         return ResponseEntity.ok(set);
     }
 
-    @PatchMapping("edit my patient/{pid}")
+    @PatchMapping("edit/{pid}")
     public ResponseEntity<? extends ResponseBodyDto>  editPatient(
             @PathVariable(value = "pid", required = false) Integer pid, @RequestBody @Valid EditPatientRequest req,
             UriComponentsBuilder uriBuilder) {
-
-        PatientDto res = PatientService.editPatientHelper(pid, req);
+        PatientDto res = patientService.editPatientHelper(pid, req);
         URI uri = uriBuilder.path("/my patients").buildAndExpand(res).toUri();
+
         return ResponseEntity.created(uri).body(res);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<? extends ResponseBodyDto> deletePatient(@PathVariable("id") Integer pid) {
+        PatientDto res = patientService.DeletePatientHelper(pid);
+
+        return ResponseEntity.ok().body(res);
     }
 }

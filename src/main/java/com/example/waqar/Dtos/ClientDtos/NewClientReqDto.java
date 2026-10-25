@@ -4,24 +4,24 @@ import com.example.waqar.Dtos.RequestBodyDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import lombok.Data;
 
 /**
  * DTO for {@link com.example.waqar.Entities.Client}
  */
-@Value
+@Data
 public class NewClientReqDto implements RequestBodyDto {
     @NotBlank
     @Size(max = 70)
-    String email;
+    private String email;
     @NotBlank
     @Size(max = 30)
     @Pattern(regexp = "^((?!@).)*$", message = "The '@' character is not allowed")
-    String username;
+    private String username;
     @NotBlank
     @Size(max = 15)
-    String phoneNumber;
+    private String phoneNumber;
     @NotBlank
     @Size(max = 70)
-    String password;
+    private String password;
 }

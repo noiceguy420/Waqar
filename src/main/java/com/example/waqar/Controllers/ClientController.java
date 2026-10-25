@@ -1,6 +1,7 @@
 package com.example.waqar.Controllers;
 
 import com.example.waqar.Dtos.*;
+import com.example.waqar.Dtos.ClientDtos.EditClientDto;
 import com.example.waqar.Dtos.ClientDtos.NewClientReqDto;
 import com.example.waqar.Mappers.ClientMapper;
 import com.example.waqar.Services.ClientService;
@@ -25,13 +26,23 @@ public class ClientController {
     public ResponseEntity<? extends ResponseBodyDto> newClient(@RequestBody @Valid NewClientReqDto req, UriComponentsBuilder uriBuilder) {
         ResponseBodyDto res = clientService.newClientHelper(req);
 
-        URI uri = uriBuilder.path("/me").buildAndExpand(res).toUri();
+        URI uri = uriBuilder.path("/me").build().toUri();
         return ResponseEntity.created(uri).body(res);
     }
 
     @GetMapping("me")
-    public ResponseEntity<? extends CustomWaqarDto> me() {
+    public ResponseEntity<? extends ResponseBodyDto> me() {
         return ResponseEntity.ok(clientMapper.toDto(authService.getLoggedInClient()));
     }
+
+    @PatchMapping("/edit")
+    public ResponseEntity<? extends  ResponseBodyDto> edit(@RequestBody @Valid EditClientDto req, UriComponentsBuilder uriBuilder) {
+        ResponseBodyDto res = clientService.editClientHelper(req, authService.getLoggedInClient());
+
+        URI uri = uriBuilder.path("/me").build().toUri();
+        return ResponseEntity.created(uri).body(res);
+    }
+
+    //TODO: change password, forgot my password, and delete client verify all with an otp to email and/or phone number
 
 }

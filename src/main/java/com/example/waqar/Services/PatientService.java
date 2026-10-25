@@ -7,6 +7,8 @@ import com.example.waqar.Dtos.PatientDtos.PatientSetDto;
 import com.example.waqar.Entities.Client;
 import com.example.waqar.Entities.Patient;
 import com.example.waqar.Exceptions.AuthException;
+import com.example.waqar.Exceptions.BadRequestException;
+import com.example.waqar.Exceptions.NoPatientsException;
 import com.example.waqar.Exceptions.PatientNotFoundException;
 import com.example.waqar.Mappers.ClientMapper;
 import com.example.waqar.Mappers.PatientMapper;
@@ -14,6 +16,7 @@ import com.example.waqar.Repositories.PatientRepo;
 import com.example.waqar.Services.SecurityServices.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.Set;
 
 
 @Service
@@ -37,10 +40,17 @@ public class PatientService {
 
     public PatientSetDto getPatientsHelper() {
         Client client = authService.getLoggedInClient();
-        return new PatientSetDto(patientMapper.setToDtos(client.getPatients()), clientMapper.toDto(client));
+        Set<Patient> patSet = client.getPatients();
+        if (patSet.isEmpty()) {
+            throw new NoPatientsException(client.getUsername());
+        }
+        return new PatientSetDto(patientMapper.setToDtos(patSet), clientMapper.toDto(client));
     }
 
     public PatientDto editPatientHelper(Integer pid, EditPatientRequest req) {
+        if(pid == null)
+            throw new BadRequestException("patient id not provided");
+
         Patient tmpPat = patientRepo.findById(pid).orElseThrow(() ->
                 new PatientNotFoundException("id",pid.toString()));
 
@@ -59,6 +69,17 @@ public class PatientService {
 
         patientRepo.save(tmpPat);
         logger.log("Edited Patient has been saved: "  + tmpPat);
+        return patientMapper.toDto(tmpPat);
+    }
+
+    public PatientDto DeletePatientHelper(Integer pid) {
+        if(pid == null)
+            throw new BadRequestException("patient id not provided");
+        Patient tmpPat = patientRepo.findById(pid).orElse(null);
+        if(tmpPat == null)
+            logger.log("Patient with id " + pid + " does not exist. as a deletion no exception has been thrown");
+        patientRepo.deleteById(pid);
+        logger.log("Patient has been deleted: "  + tmpPat);
         return patientMapper.toDto(tmpPat);
     }
 }

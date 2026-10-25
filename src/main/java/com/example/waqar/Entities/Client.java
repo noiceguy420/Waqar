@@ -40,7 +40,7 @@ public class Client implements CustomWaqarEntities{
     @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", fetch =  FetchType.LAZY)
     private Set<Patient> Patients = new LinkedHashSet<>();
 
     @Override
