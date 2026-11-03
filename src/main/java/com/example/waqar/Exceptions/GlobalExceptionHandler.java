@@ -18,11 +18,11 @@ import java.util.Map;
 
 @RestControllerAdvice
 @AllArgsConstructor
-public class GlobalExceptionHandler { //TODO: should I make it so that expired jwt tokens are auto refreshed?
+public class GlobalExceptionHandler {
     private LoggerService logger;
 
     private void logError(String message) {
-        logger.log("error" + message); //TODO:is it better to replace each logError function call or leave as is?
+        logger.log("error" + message);
     }
 
     @ExceptionHandler(CookieNotFoundException.class)
@@ -107,5 +107,11 @@ public class GlobalExceptionHandler { //TODO: should I make it so that expired j
     public ResponseEntity<ErrorDto> BadRequestException(BadRequestException e) {
         logError(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(e.getMessage()));
+    }
+
+    @ExceptionHandler(SessionNotFoundException.class)
+    public ResponseEntity<ErrorDto> SessionNotFoundException(SessionNotFoundException e) {
+        logError(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDto("session not found"));
     }
 }

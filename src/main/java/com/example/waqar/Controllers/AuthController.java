@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("auth")
-public class authController {
+public class AuthController {
     private JwtService jwtService;
     private final ClientRepo clientRepo;
     private LoggerService logger;
@@ -35,6 +35,8 @@ public class authController {
         Client client = authService.LoginClientHelper(req);
         Jwt accessToken = jwtService.generateAccessToken(client);
         Jwt refreshToken = jwtService.generateRefreshToken(client);
+
+        authService.createClientSession(refreshToken.toString());
 
         var cookie = new Cookie("refreshToken", refreshToken.toString());
         cookie.setHttpOnly(true);
@@ -48,16 +50,34 @@ public class authController {
     }
 
     @PostMapping("refresh")
-    public ResponseEntity<? extends ResponseBodyDto> refresh(@CookieValue(value = "refreshToken", required = false) String token){
+    public ResponseEntity<? extends ResponseBodyDto> refresh(@CookieValue(value = "refreshToken", required = false) String token, HttpServletResponse response){
         if(token == null){
             throw new CookieNotFoundException("refreshToken");
         }
+
+        if(!authService.validateSession(token)){
+            throw new InvalidJwtException("Invalid refresh token");
+        }
+
         Jwt refreshJwt = jwtService.parseToken(token);
         logger.log(refreshJwt.toString());
-        refreshJwt.validateJwt();
         Client client = clientRepo.findById(refreshJwt.getClientId()).orElseThrow(() -> new InvalidJwtException("this JWT's subject is invalid"));
         String accessToken = jwtService.generateAccessToken(client).toString();
+        jwtService.parseToken(token).getClientId();
+        authService.createClientSession(accessToken);
+        Jwt refreshToken = jwtService.generateRefreshToken(client);
+
+        authService.createClientSession(refreshToken.toString());
+
+        var cookie = new Cookie("refreshToken", refreshToken.toString());
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(jwtConfig.getRefreshExpiration());
+        cookie.setSecure(true);
+        cookie.setPath("/auth/refresh");
+        response.addCookie(cookie);
+
         logger.log("Access Token: " + accessToken);
+        logger.log("Refresh Token: " + refreshToken);
         return ResponseEntity.ok(new JwtTokenRes(accessToken));
     }
 }

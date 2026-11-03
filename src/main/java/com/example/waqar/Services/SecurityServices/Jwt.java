@@ -15,12 +15,8 @@ public class Jwt {
         this.claims = claims;
         this.secretKey = secretKey;
     }
-    public Jwt(){
-        this.claims = null;
-        this.secretKey = null;
-    }
 
-    public void validateJwt() {
+    public void validateJwt() { //only the token not the session useful for access tokens
         if(isEmpty())
             throw new InvalidJwtException("JWT is invalid");
         if(isExpired())

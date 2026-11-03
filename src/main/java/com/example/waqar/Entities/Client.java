@@ -43,6 +43,9 @@ public class Client implements CustomWaqarEntities{
     @OneToMany(mappedBy = "client", fetch =  FetchType.LAZY)
     private Set<Patient> Patients = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "client", fetch =  FetchType.LAZY)
+    private Set<ClientSession> Sessions = new LinkedHashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
