@@ -2,9 +2,9 @@ spring:
   application:
     name: Waqar
   datasource:
-    url: "JDBC:mysql://localhost:3306/waqardb"
-    username: waqarDev
-    password: 123456
+    url: ${DB_LOCAL_URL}
+    username: ${DB_DEV_USER}
+    password: ${DB_DEV_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa.show-sql: true
   jwt:
@@ -14,3 +14,7 @@ spring:
   logging:
     level:
       org.springframework.security: DEBUG
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false

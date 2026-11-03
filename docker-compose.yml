@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_DEV_USER}
+      MYSQL_PASSWORD: ${DB_DEV_PASSWORD}
+    #ports:
+     # - "3307:3306"   # optional: lets you reach it from your host tools (Workbench, etc.)
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_DATASOURCE_URL: ${DB_DOCKER_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_DEV_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_DEV_PASSWORD}
+
+volumes:
+  db-data:
+
+#to compose run:docker compose up -d
