@@ -6,10 +6,7 @@ import com.example.waqar.Dtos.PatientDtos.PatientDto;
 import com.example.waqar.Dtos.PatientDtos.PatientSetDto;
 import com.example.waqar.Entities.Client;
 import com.example.waqar.Entities.Patient;
-import com.example.waqar.Exceptions.AuthException;
-import com.example.waqar.Exceptions.BadRequestException;
-import com.example.waqar.Exceptions.NoPatientsException;
-import com.example.waqar.Exceptions.PatientNotFoundException;
+import com.example.waqar.Exceptions.*;
 import com.example.waqar.Mappers.ClientMapper;
 import com.example.waqar.Mappers.PatientMapper;
 import com.example.waqar.Repositories.PatientRepo;
@@ -55,7 +52,7 @@ public class PatientService {
                 new PatientNotFoundException("id",pid.toString()));
 
         if (!tmpPat.clientOwnsPatient(authService.getLoggedInClient()))
-            throw new AuthException("client mismatch", "this client is not authorized to edit this patient");
+            throw new ClientPatientMismatchException();
         if(req.getName() != null && !req.getName().isEmpty())
             tmpPat.setName(req.getName());
         if(req.getChronicDiseases() != null )

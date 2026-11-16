@@ -114,4 +114,10 @@ public class GlobalExceptionHandler {
         logError(e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDto("session not found"));
     }
+
+    @ExceptionHandler(ClientPatientMismatchException.class)
+    public ResponseEntity<ErrorDto> ClientPatientMismatchException(ClientPatientMismatchException e) {
+        logError(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDto(e.getMessage()));
+    }
 }
