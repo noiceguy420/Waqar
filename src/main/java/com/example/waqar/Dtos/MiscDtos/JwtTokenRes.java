@@ -1,11 +1,7 @@
 package com.example.waqar.Dtos.MiscDtos;
 
 import com.example.waqar.Dtos.ResponseBodyDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+//something weird check it out. wouldn't automatically turn into a record class
+public record JwtTokenRes (String accessToken) implements ResponseBodyDto {
 
-@Data
-@AllArgsConstructor
-public class JwtTokenRes implements ResponseBodyDto {
-    private final String AccessToken;
 }

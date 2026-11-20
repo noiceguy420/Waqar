@@ -2,17 +2,10 @@ package com.example.waqar.Dtos.PatientDtos;
 import com.example.waqar.Dtos.CustomWaqarDto;
 import com.example.waqar.Entities.ChronicDiseases;
 import com.example.waqar.Entities.Gender;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.Set;
 
-@AllArgsConstructor
-@Data
-public class PatientSetItemDto implements CustomWaqarDto {
-    private final String name;
-    private final LocalDate dateOfBirth;
-    private final Gender gender;
-    private final String phoneNumber;
-    private final Set<ChronicDiseases> chronicDiseases;
+public record PatientSetItemDto(String name, LocalDate dateOfBirth, Gender gender, String phoneNumber,
+                                Set<ChronicDiseases> chronicDiseases) implements CustomWaqarDto {
 }
