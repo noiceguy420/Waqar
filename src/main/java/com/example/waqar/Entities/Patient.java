@@ -9,7 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -54,7 +54,15 @@ public class Patient implements CustomWaqarEntities{
     private Client client;
 
     @OneToMany(mappedBy = "patient")
-    private Set<Appointment> appointments = new LinkedHashSet<>();
+    private Set<Appointment> appointments = new HashSet<>();
+
+    @ManyToMany()
+    @JoinTable(
+            name = "patient_locations",
+            joinColumns = @JoinColumn(name = "patient_id"),
+            inverseJoinColumns = @JoinColumn(name = "location_id")
+    )
+    private Set<Location> locations = new HashSet<>();
 
     public boolean clientOwnsPatient(Client client) {
         return this.getClient().equals(client);

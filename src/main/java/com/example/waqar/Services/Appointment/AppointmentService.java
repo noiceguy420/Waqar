@@ -1,7 +1,6 @@
 package com.example.waqar.Services.Appointment;
 
 import com.example.waqar.Dtos.AppointmentDtos.AppointmentSetDto;
-import com.example.waqar.Dtos.AppointmentDtos.AppointmentSetItemDto;
 import com.example.waqar.Entities.Appointment;
 import com.example.waqar.Entities.Patient;
 import com.example.waqar.Exceptions.BadRequestException;
@@ -27,7 +26,7 @@ public class AppointmentService { //TODO: a method for past appointments
     private final AppointmentRepo appointmentRepo;
     private final AppointmentMapper appointmentMapper;
 
-    public AppointmentSetDto getUpcomingPatientAppointments(Integer pid) { //TODO: change verification from datetime to status (pending, accepted, active, resolved, canceled, rejected)
+    public AppointmentSetDto getUpcomingPatientAppointments(Integer pid) {
         //validate current user owns requested patient
         if(pid == null)
             throw new BadRequestException("pid is null");
@@ -37,7 +36,7 @@ public class AppointmentService { //TODO: a method for past appointments
             throw new ClientPatientMismatchException();
         //validate whether patient even has any appointments
         if(pat.getAppointments().isEmpty())
-            return new AppointmentSetDto(new HashSet<AppointmentSetItemDto>(),
+            return new AppointmentSetDto(new HashSet<>(),
                     this.clientMapper.toDto(pat.getClient()));
         //get future appointments
         Set<Appointment> futurePatientAppointments = this.appointmentRepo.findFuturePatientAppointments(pat);

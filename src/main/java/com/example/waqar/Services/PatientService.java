@@ -53,16 +53,16 @@ public class PatientService {
 
         if (!tmpPat.clientOwnsPatient(authService.getLoggedInClient()))
             throw new ClientPatientMismatchException();
-        if(req.getName() != null && !req.getName().isEmpty())
-            tmpPat.setName(req.getName());
-        if(req.getChronicDiseases() != null )
-            tmpPat.setChronicDiseases(req.getChronicDiseases());
-        if(req.getGender() != null )
-            tmpPat.setGender(req.getGender());
-        if(req.getPhoneNumber() != null )
-            tmpPat.setPhoneNumber(req.getPhoneNumber());
-        if(req.getDateOfBirth() != null )
-            tmpPat.setDateOfBirth(req.getDateOfBirth());
+        if(req.name() != null && !req.name().isEmpty())
+            tmpPat.setName(req.name());
+        if(req.chronicDiseases() != null )
+            tmpPat.setChronicDiseases(req.chronicDiseases());
+        if(req.gender() != null )
+            tmpPat.setGender(req.gender());
+        if(req.phoneNumber() != null )
+            tmpPat.setPhoneNumber(req.phoneNumber());
+        if(req.dateOfBirth() != null )
+            tmpPat.setDateOfBirth(req.dateOfBirth());
 
         patientRepo.save(tmpPat);
         logger.log("Edited Patient has been saved: "  + tmpPat);

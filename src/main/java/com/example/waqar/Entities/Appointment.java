@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -43,7 +43,25 @@ public class Appointment implements CustomWaqarEntities{
     @Column(name = "went_to_a_doctor", nullable = false)
     private Boolean wentToADoctor = false;
 
+    @NotNull
+    @Column(name = "status" , nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
+
     @OneToMany(mappedBy = "associatedAppointment")
-    private Set<PostAppointmentCaseDocumentation> postAppointmentCaseDocumentations = new LinkedHashSet<>();
+    private Set<PostAppointmentCaseDocumentation> postAppointmentCaseDocumentations = new HashSet<>();
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "location", nullable = false)
+    private Location location;
+
+    @ManyToMany()
+    @JoinTable(
+            name = "appointment_employee",
+            joinColumns = @JoinColumn(name = "appointment_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
+    )
+    private Set<Employee> employees = new HashSet<>();
 
 }

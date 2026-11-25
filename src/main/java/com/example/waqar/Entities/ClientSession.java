@@ -1,32 +1,44 @@
 package com.example.waqar.Entities;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import java.time.LocalDateTime;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "client_session", schema = "waqardb")
+@Table(name = "client_session")
 public class ClientSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",  nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "token_hash", nullable = false, length = 32, unique = true)
-    private byte[] tokenHash;
+    @Size(max = 32)
+    @NotNull
+    @Column(name = "token_hash", nullable = false, length = 32)
+    private Byte[] tokenHash;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @NotNull
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
 
+    @ColumnDefault("1")
     @Column(name = "active")
-    private Boolean active = true;
+    private Boolean active;
+
 }

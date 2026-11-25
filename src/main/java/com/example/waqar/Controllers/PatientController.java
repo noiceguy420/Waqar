@@ -35,7 +35,7 @@ public class PatientController {
     public ResponseEntity<? extends ResponseBodyDto> getPatients() {
         PatientSetDto set = patientService.getPatientsHelper();
 
-        if(set.getPatientsCount() < 1) {
+        if(set.PatientDtos().isEmpty()) {
             logger.log("No pending patient found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto("no pending patients found for current user"));
         }

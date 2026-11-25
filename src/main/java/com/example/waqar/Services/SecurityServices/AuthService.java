@@ -37,7 +37,7 @@ public class AuthService {
 
     public Client getLoggedInClient(){
         try {
-            Integer id = (Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            @SuppressWarnings("DataFlowIssue") Integer id = (Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if(id == null)
                 throw new AuthException("something went wrong", "please try again. if the issue persists contact us");
             return clientRepo.findById(id).orElseThrow(() -> new ClientNotFoundException("ID", id.toString()));
@@ -48,9 +48,9 @@ public class AuthService {
     }
 
     public Client LoginClientHelper(ClientLoginReq req){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getIdentifier(), req.getPassword()));
-            return clientRepo.findByUsername(req.getIdentifier())
-                    .or(() -> clientRepo.findByEmail(req.getIdentifier()))
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.identifier(), req.password()));
+            return clientRepo.findByUsername(req.identifier())
+                    .or(() -> clientRepo.findByEmail(req.identifier()))
                     .orElseThrow(() -> new AuthException("identifier or password are incorrect", "bad credentials"));
 
     }
@@ -58,7 +58,11 @@ public class AuthService {
     public void createClientSession(String jwtToken){
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashedToken = md.digest(jwtToken.getBytes(StandardCharsets.UTF_8));
+            byte[] prehashedToken = md.digest(jwtToken.getBytes(StandardCharsets.UTF_8));
+            Byte[] hashedToken = new Byte[32];
+            for (int i = 0; i < 32; i++) {
+                hashedToken[i] = prehashedToken[i];
+            }
 
             Integer cid = jwtService.parseToken(jwtToken).getClientId();
             Client client = clientRepo.findById(cid).orElseThrow(() -> new ClientNotFoundException("ID", cid.toString()));
@@ -92,7 +96,7 @@ public class AuthService {
                 return false;
             }
 
-            LocalDateTime expiry = session.getCreatedAt().plus(jwtConfig.getRefreshExpiration(), ChronoUnit.MILLIS);
+            LocalDateTime expiry = LocalDateTime.from(session.getCreatedAt().plus(jwtConfig.getRefreshExpiration(), ChronoUnit.MILLIS));
             if (expiry.isBefore(LocalDateTime.now())) {
                 sessionRepo.revokeActiveByClient(client);
                 throw new InvalidJwtException("Refresh token expired");

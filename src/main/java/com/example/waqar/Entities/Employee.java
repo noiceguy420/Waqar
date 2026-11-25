@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -50,5 +53,8 @@ public class Employee implements CustomWaqarEntities{
     @ColumnDefault("0")
     @Column(name = "years_of_exp", nullable = false)
     private Byte yearsOfExp;
+
+    @ManyToMany(mappedBy = "employees")
+    private Set<Appointment>  appointments = new HashSet<>();
 
 }

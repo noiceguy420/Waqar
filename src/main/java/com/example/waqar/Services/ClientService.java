@@ -28,6 +28,7 @@ public class ClientService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private LoggerService logger;
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public UserDetails loadUserByUsername(@NonNull String identifier) throws UsernameNotFoundException {
         Client client;
@@ -39,12 +40,12 @@ public class ClientService implements UserDetailsService {
     }
 
     public ResponseBodyDto newClientHelper(NewClientReqDto req){
-        this.validateClientDetails(req.getEmail(), req.getPhoneNumber(), req.getUsername());
+        this.validateClientDetails(req.email(), req.phoneNumber(), req.username());
 
-        if(clientRepo.existsByEmail(req.getEmail()))
-            throw new ClientAlreadyExistsException("email", req.getEmail());
+        if(clientRepo.existsByEmail(req.email()))
+            throw new ClientAlreadyExistsException("email", req.email());
         Client client = clientMapper.toEntity(req);
-        client.setPassHash(passwordEncoder.encode(req.getPassword()));
+        client.setPassHash(passwordEncoder.encode(req.password()));
         logger.log("new client saved: " + client);
         clientRepo.save(client);
 
@@ -53,28 +54,28 @@ public class ClientService implements UserDetailsService {
 
     public ResponseBodyDto editClientHelper(EditClientDto req, Client client){
 
-        if(req.getEmail() != null)
-            if(this.validateClientEmail(req.getEmail()))
-                if(!client.getEmail().equals(req.getEmail()))
-                    client.setEmail(req.getEmail());
+        if(req.email() != null)
+            if(this.validateClientEmail(req.email()))
+                if(!client.getEmail().equals(req.email()))
+                    client.setEmail(req.email());
                 else
                     throw new AuthException("unauthorized access", "you may not edit this client");
             else
                 throw new BadRequestException("email is invalid");
 
-        if(req.getPhoneNumber() != null)
-            if(this.validateClientPhone(req.getPhoneNumber()))
-                if(!client.getPhoneNumber().equals(req.getPhoneNumber()))
-                    client.setPhoneNumber(req.getPhoneNumber());
+        if(req.phoneNumber() != null)
+            if(this.validateClientPhone(req.phoneNumber()))
+                if(!client.getPhoneNumber().equals(req.phoneNumber()))
+                    client.setPhoneNumber(req.phoneNumber());
                 else
                     throw new AuthException("unauthorized access", "you may not edit this client");
             else
                 throw new BadRequestException("phone number is invalid");
 
-        if(req.getUsername() != null)
-            if(this.validateClientUsername(req.getUsername()))
-                if(!client.getUsername().equals(req.getUsername()))
-                    client.setUsername(req.getUsername());
+        if(req.username() != null)
+            if(this.validateClientUsername(req.username()))
+                if(!client.getUsername().equals(req.username()))
+                    client.setUsername(req.username());
                 else
                     throw new AuthException("unauthorized access", "you may not edit this client");
             else
@@ -84,7 +85,7 @@ public class ClientService implements UserDetailsService {
     }
 
     private void validateClientDetails(String email, String phoneNumber, String username){
-        if(!this.validateClientEmail(email))
+        if(!this.validateClientEmail(email)) //TODO: replace the return true in these methods or remove them
             throw new BadRequestException("email + " + email + " is invalid");
         if(!this.validateClientPhone(phoneNumber))
             throw new BadRequestException("phone number " + phoneNumber + " is invalid");

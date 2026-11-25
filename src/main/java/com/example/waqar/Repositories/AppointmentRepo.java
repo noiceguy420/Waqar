@@ -11,6 +11,6 @@ import java.util.UUID;
 
 public interface AppointmentRepo extends JpaRepository<Appointment, UUID> {
 
-    @Query("SELECT Appointment a where a.patient = :patient AND a.dateTime >= System.now") //TODO: verify this jquery
+    @Query("SELECT a FROM Appointment a where a.patient = :patient AND a.dateTime >= CURRENT_TIMESTAMP AND a.status IN ('PENDING', 'ACCEPTED', 'REJECTED') ORDER BY a.dateTime")
     Set<Appointment> findFuturePatientAppointments(@Param("patient") Patient patient);
 }
